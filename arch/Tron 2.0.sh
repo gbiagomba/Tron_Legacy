@@ -21,20 +21,23 @@ if [ "$OS_CHK" != "debian" ]; then
 fi
 
 #Check for updates and upgrades again
-apt-get update -y
-apt-get upgrade -y
+apt-get update --yes
+apt-get upgrade --yes
 
 #Install security applications
-apt-get install clamav -y
-apt-get install chkrootkit -y
-apt-get install rkhunter -y
-apt-get install lynis -y
-apt-get install gufw -y
-apt-get install fail2ban -y
-apt-get install logwatch -y
-apt-get install libdate-manip-perl -y
-apt-get install acct -y
-#apt-get install tiger -y
+apt-get install clamav --yes
+apt-get install chkrootkit --yes
+apt-get install rkhunter --yes
+apt-get install lynis --yes
+apt-get install gufw --yes
+apt-get install fail2ban --yes
+apt-get install logwatch --yes
+apt-get install libdate-manip-perl --yes
+apt-get install acct --yes
+#apt-get install tiger --yes
+
+#Limit su access to administrators only
+dpkg-statoverride --update --add root sudo 4750 /bin/su
 
 #Moving essential files
 mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
@@ -46,8 +49,6 @@ mv /etc/sysctl .conf /etc/sysctl.conf_bkup
 mv /etc/apache2/conf-enabled/security.conf /etc/apache2/conf-enabled/security.conf_bkup
 mv /etc/chkrootkit.conf /etc/chkrootkit.conf_bkup
 mv /etc/default/rkhunter /etc/default/rkhunter_bkup
-mv /etc/modsecurity/modsecurity.conf /etc/modsecurity/modsecurity.conf_bkup
-mv /etc/apache2/mods-available/security2.conf /etc/apache2/mods-available/security2.conf_bkup
 
 #Copying new configuration file
 cp lib/sshd_config /etc/ssh/ 
@@ -56,8 +57,6 @@ cp lib/sysctl.conf /etc/
 cp lib/security.conf /etc/apache2/conf-enabled/
 cp lib/chkrootkit.conf /etc/
 cp lib/rkhunter /etc/default/
-cp /etc/modsecurity/modsecurity.conf /etc/modsecurity/
-cp /etc/apache2/mods-available/security2.conf /etc/apache2/mods-available/
 
 #Setting up cron jobs
 cp lib/pacct-report.sh /etc/cron.weekly/
@@ -65,9 +64,6 @@ mv /etc/cron.daily/00logwatch /etc/cron.weekly/
 mv /etc/cron.weekly/rkhunter /etc/cron.weekly/rkhunter_update
 mv /etc/cron.daily/rkhunter /etc/cron.weekly/rkhunter_run
 mv /etc/cron.daily/chkrootkit /etc/cron.weekly/
-
-#Limit su access to administrators only
-dpkg-statoverride --update --add root sudo 4750 /bin/su
 
 #Prevent none admin users from running sudo
 dpkg-statoverride --update --add root sudo 4750 /bin/su
@@ -118,7 +114,7 @@ apt-get autoclean
 apt-get autoremove
 
 #Launch the system upgrade
-#do-release-upgrade -f DistUpgradeViewNonInteractive
+do-release-upgrade -f DistUpgradeViewNonInteractive
 
 #restart the box
 shutdown -r now
