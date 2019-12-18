@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #Author: Gilles S. Biagomba
-#Program: $Tron 2.0
+#Program: Tron
 #Description: This program automates the Ubuntu 8 to 10 upgrade & include security\n
 #Links for the hardening:
 #http://www.lampnode.com/linux/howto-harden-ubuntu-1404-after-installation/
